@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página com Árvore Frutífera</title>
+    <style>
+        body {
+            background-image: url('https://images.pexels.com/photos/1172064/pexels-photo-1172064.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); /* Coloque a URL da imagem desejada */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white; /* Para garantir que o texto tenha boa visibilidade */
+        }
+        .inputs {
+            margin-top: 10px;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .tree {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        let dataList = [];
+        
+        function formatPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+            }
+            input.value = value;
+        }
+        
+        function saveData() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            if (name && phone) {
+                dataList.push(`${name} - ${phone}`);
+                document.getElementById('name').value = '';
+                document.getElementById('phone').value = '';
+            } else {
+                alert('Preencha todos os campos!');
+            }
+        }
+        
+        function downloadList() {
+            if (dataList.length === 0) {
+                alert('Nenhum dado para baixar!');
+                return;
+            }
+            const blob = new Blob([dataList.join('\n')], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'dados.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        Inclua aqui seu nome e telefone
+        <div class="inputs">
+            <input type="text" id="name" placeholder="Nome">
+            <input type="text" id="phone" placeholder="(XX) XXXXX-XXXX" oninput="formatPhone(this)" maxlength="15">
+        </div>
+        <button onclick="saveData()">Enviar</button>
+        <button onclick="downloadList()">Baixar Lista</button>
+    </div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Apple_tree.jpg" alt="Árvore Frutífera" class="tree">
+</body>
+</html>
